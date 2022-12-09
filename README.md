@@ -29,3 +29,19 @@ Riverpod 상태관리 툴에 대해 배워봅니다.
 #### UI 마무리하기
 
 - SingleChildScrollView > keyboardDismissBehavior : 드래그하면 키보드 닫힘
+
+
+&nbsp;
+
+### 🧐 12월 9일 학습내용
+
+#### 인증 시스템
+
+- (토큰 vs 세션) https://ts2ree.tistory.com/302
+- (JWT 토큰 이론) https://ts2ree.tistory.com/303
+- (리프레시 토큰과 액세스 토큰) https://ts2ree.tistory.com/304
+
+
+
+
+
