@@ -7,9 +7,18 @@ import 'package:flutter/material.dart';
 
 import '../../common/component/custom_text_field.dart';
 import '../../common/const/colors.dart';
+import '../../common/view/root_tab.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  String username = '';
+  String password = '';
 
   @override
   Widget build(BuildContext context) {
@@ -40,19 +49,23 @@ class LoginScreen extends StatelessWidget {
               ),
               CustomTextFormField(
                 hintText: '이메일을 입력해주세요',
-                onChanged: (value) {},
+                onChanged: (String value) {
+                  username = value;
+                },
               ),
               const SizedBox(height: 16),
               CustomTextFormField(
                 hintText: '비밀번호를 입력해주세요',
-                onChanged: (value) {},
+                onChanged: (String value) {
+                  password = value;
+                },
                 obscureText: true,
               ),
               const SizedBox(height: 16),
               ElevatedButton(
                 onPressed: () async {
                   // ID:비밀번호
-                  const rawString = 'test@codefactory.ai:testtest';
+                  final rawString = '$username:$password';
 
                   Codec<String, String> stringToBase64 = utf8.fuse(base64);
 
@@ -64,6 +77,12 @@ class LoginScreen extends StatelessWidget {
                       headers: {
                         'authorization': 'Basic $token', // Basic 은 Raw 형태일 때를 말함
                       },
+                    ),
+                  );
+
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (_) => const RootTab(),
                     ),
                   );
 
