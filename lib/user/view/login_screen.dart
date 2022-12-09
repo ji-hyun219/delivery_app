@@ -1,4 +1,8 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:delivery_app/common/layout/default_layout.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
 import '../../common/component/custom_text_field.dart';
@@ -9,6 +13,14 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final dio = Dio();
+
+    // localhost
+    const emulatorIp = '10.0.2.2:3000';
+    const simulatorIp = '127.0.0.1:3000';
+
+    final ip = Platform.isIOS ? simulatorIp : emulatorIp;
+
     return DefaultLayout(
       child: SingleChildScrollView(
         keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
@@ -38,7 +50,25 @@ class LoginScreen extends StatelessWidget {
               ),
               const SizedBox(height: 16),
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () async {
+                  // ID:비밀번호
+                  const rawString = 'test@codefactory.ai:testtest';
+
+                  Codec<String, String> stringToBase64 = utf8.fuse(base64);
+
+                  String token = stringToBase64.encode(rawString);
+
+                  final resp = await dio.post(
+                    'http://$ip/auth/login',
+                    options: Options(
+                      headers: {
+                        'authorization': 'Basic $token', // Basic 은 Raw 형태일 때를 말함
+                      },
+                    ),
+                  );
+
+                  print(resp.data);
+                },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: PRIMARY_COLOR,
                 ),
@@ -47,7 +77,21 @@ class LoginScreen extends StatelessWidget {
                 ),
               ),
               TextButton(
-                onPressed: () {},
+                onPressed: () async {
+                  const refreshToken =
+                      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3RAY29kZWZhY3RvcnkuYWkiLCJzdWIiOiJmNTViMzJkMi00ZDY4LTRjMWUtYTNjYS1kYTlkN2QwZDkyZTUiLCJ0eXBlIjoicmVmcmVzaCIsImlhdCI6MTY3MDYwMDQwMywiZXhwIjoxNjcwNjg2ODAzfQ.npQMRy3X0ur0gtG-h8F7EUzhmQ0Xkg9PxqCsV2S26V0';
+
+                  final resp = await dio.post(
+                    'http://$ip/auth/token',
+                    options: Options(
+                      headers: {
+                        'authorization': 'Bearer $refreshToken',
+                      },
+                    ),
+                  );
+
+                  print(resp.data);
+                },
                 style: TextButton.styleFrom(
                   foregroundColor: Colors.black,
                 ),
