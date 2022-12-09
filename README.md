@@ -41,7 +41,15 @@ Riverpod 상태관리 툴에 대해 배워봅니다.
 - (JWT 토큰 이론) https://ts2ree.tistory.com/303
 - (리프레시 토큰과 액세스 토큰) https://ts2ree.tistory.com/304
 
-
-
-
+- ❓ SecureStorage 문서 읽어보기
+- ❓ 우리 Splash Screen 과 비교하면서 공부하기 
+```dart
+   final ss = Get.find<FlutterSecureStorage>();
+    await ss.write(
+      key: Constants.accessTokenKey,
+      value: accessToken,
+      iOptions: const IOSOptions(accessibility: KeychainAccessibility.first_unlock),
+    );
+```
+- ❓ mixin 
 
