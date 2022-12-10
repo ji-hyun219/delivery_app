@@ -60,3 +60,8 @@ Riverpod 상태관리 툴에 대해 배워봅니다.
           child: image,
         ),
 ```
+
+#### 페이지네이션
+
+- Paged Based Pagination : 요청을 보낼 때 원하는 데이터 갯수와 몇번째 페이지를 가져올 것인지 명시 (=> 몇 번째 페이지느냐에 따라 skip, take 가 이루어짐)
+- Cursor Based Pagination : 요청을 보낼 때 마지막 데이터의 기준값(ID) 과 몇개의 데이터를 가지고 올 것인지 명시 (=> 모바일에서 사용하는 방식임. start, perPage)
