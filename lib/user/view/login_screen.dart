@@ -1,9 +1,11 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:delivery_app/common/const/data.dart';
 import 'package:delivery_app/common/layout/default_layout.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import '../../common/component/custom_text_field.dart';
 import '../../common/const/colors.dart';
@@ -80,13 +82,21 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   );
 
+                  final refreshToken = resp.data['refreshToken'];
+                  final accessToken = resp.data['accessToken'];
+                  print('refreshToken: $refreshToken');
+                  print('accessToekn: $accessToken');
+
+                  const storage = FlutterSecureStorage();
+
+                  await storage.write(key: REFRESH_TOKEN_KEY, value: refreshToken);
+                  await storage.write(key: ACCESS_TOKEN_KEY, value: accessToken);
+
                   Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (_) => const RootTab(),
                     ),
                   );
-
-                  print(resp.data);
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: PRIMARY_COLOR,

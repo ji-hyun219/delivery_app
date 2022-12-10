@@ -1,5 +1,4 @@
-import 'package:delivery_app/common/component/custom_text_field.dart';
-import 'package:delivery_app/user/view/login_screen.dart';
+import 'package:delivery_app/common/view/splash_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -16,7 +15,7 @@ class _App extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(fontFamily: 'NotoSans'),
       debugShowCheckedModeBanner: false,
-      home: const LoginScreen(),
+      home: const SplashScreen(),
     );
   }
 }
