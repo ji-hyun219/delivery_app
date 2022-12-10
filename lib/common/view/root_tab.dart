@@ -1,4 +1,5 @@
 import 'package:delivery_app/common/layout/default_layout.dart';
+import 'package:delivery_app/common/view/restaurant_screen.dart';
 import 'package:flutter/material.dart';
 
 import '../const/colors.dart';
@@ -76,7 +77,7 @@ class _RootTabState extends State<RootTab> with SingleTickerProviderStateMixin {
           physics: const NeverScrollableScrollPhysics(), // 좌우 슬라이드 안되게
           controller: _controller,
           children: const [
-            Center(child: Text('홈')),
+            RestaurantScreen(),
             Center(child: Text('음식')),
             Center(child: Text('주문')),
             Center(child: Text('프로필')),

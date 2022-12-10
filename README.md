@@ -40,6 +40,8 @@ Riverpod 상태관리 툴에 대해 배워봅니다.
 - (JWT 토큰 이론) https://ts2ree.tistory.com/303
 - (리프레시 토큰과 액세스 토큰) https://ts2ree.tistory.com/304
 
+&nbsp;
+
 ### 🧐 12월 10일 학습내용
 
 #### 탭바 관련
@@ -47,3 +49,14 @@ Riverpod 상태관리 툴에 대해 배워봅니다.
 - vsync 에 현재 StatefulWidget 넣어주면 됨. this 는 특정 기능을 갖고 있어야 한다 -> SingleTickerProviderStateMixin
 
 - \_controller.addListener(tabListiner); // Listner 따로 빼면 간결해 보임
+
+#### 레스토랑 카드 관련
+
+- cliprrect : 이미지를 깎는 위젯
+
+```dart
+ ClipRRect(
+          borderRadius: BorderRadius.circular(12.0),
+          child: image,
+        ),
+```
