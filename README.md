@@ -30,7 +30,6 @@ Riverpod 상태관리 툴에 대해 배워봅니다.
 
 - SingleChildScrollView > keyboardDismissBehavior : 드래그하면 키보드 닫힘
 
-
 &nbsp;
 
 ### 🧐 12월 9일 학습내용
@@ -41,15 +40,10 @@ Riverpod 상태관리 툴에 대해 배워봅니다.
 - (JWT 토큰 이론) https://ts2ree.tistory.com/303
 - (리프레시 토큰과 액세스 토큰) https://ts2ree.tistory.com/304
 
-- ❓ SecureStorage 문서 읽어보기
-- ❓ 우리 Splash Screen 과 비교하면서 공부하기 
-```dart
-   final ss = Get.find<FlutterSecureStorage>();
-    await ss.write(
-      key: Constants.accessTokenKey,
-      value: accessToken,
-      iOptions: const IOSOptions(accessibility: KeychainAccessibility.first_unlock),
-    );
-```
-- ❓ mixin 
+### 🧐 12월 10일 학습내용
 
+#### 탭바 관련
+
+- vsync 에 현재 StatefulWidget 넣어주면 됨. this 는 특정 기능을 갖고 있어야 한다 -> SingleTickerProviderStateMixin
+
+- \_controller.addListener(tabListiner); // Listner 따로 빼면 간결해 보임
