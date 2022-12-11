@@ -117,6 +117,14 @@ final List<Map<String, dynamic>> fooData =
 print(fooData);
 ```
 
+&nbsp;
+
 #### Dart 슈퍼 이니셜라이저
 
 https://ts2ree.tistory.com/305
+
+&nbsp;
+
+#### Dart factory
+
+https://ts2ree.tistory.com/306
