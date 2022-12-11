@@ -1,9 +1,8 @@
 import 'package:delivery_app/common/const/data.dart';
+import 'package:delivery_app/restaurant/component/restaurant_card.dart';
 import 'package:delivery_app/restaurant/model/restautrant_model.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-
-import '../../restaurant/component/restaurant_card.dart';
 
 class RestaurantScreen extends StatelessWidget {
   const RestaurantScreen({Key? key}) : super(key: key);
@@ -40,18 +39,8 @@ class RestaurantScreen extends StatelessWidget {
                 // parsed
                 final pItem = RestaurantModel.fromJson(json: item);
 
-                return RestaurantCard(
-                  image: Image.network(
-                    pItem.thumbUrl,
-                    fit: BoxFit.cover,
-                  ),
-                  name: pItem.name,
-                  tags: pItem.tags,
-                  ratingsCount: pItem.ratingsCount,
-                  deliveryTime: pItem.deliveryTime,
-                  deliveryFee: pItem.deliveryFee,
-                  ratings: pItem.ratings,
-                );
+                // RestaurantCard 위젯의 factory 생성자
+                return RestaurantCard.fromModel(model: pItem);
               },
               separatorBuilder: (_, index) {
                 return const SizedBox(height: 16.0);
