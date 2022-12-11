@@ -65,3 +65,26 @@ Riverpod 상태관리 툴에 대해 배워봅니다.
 
 - Paged Based Pagination : 요청을 보낼 때 원하는 데이터 갯수와 몇번째 페이지를 가져올 것인지 명시 (=> 몇 번째 페이지느냐에 따라 skip, take 가 이루어짐)
 - Cursor Based Pagination : 요청을 보낼 때 마지막 데이터의 기준값(ID) 과 몇개의 데이터를 가지고 올 것인지 명시 (=> 모바일에서 사용하는 방식임. start, perPage)
+
+
+
+
+&nbsp;
+
+### 🧐 12월 11일 학습내용
+
+#### Postman 실습
+
+- `매번 Bearer 토큰 세팅 안해줘도 되는 방법` -> Postman 의 세팅법 배워보기
+- Postman 의 environment 에서 accessToken, refreshToken 변수를 만들고 저장
+- POST /auth/login 에서 `Tests 탭` 누르기 (이 탭에서는 테스트 코드를 짤 수도 있고 실제 코드를 실행할 수 있다. 여기선 후자)
+- 이 탭에 오른쪽에 가이드라인 있으니 그 중 `Set an environmet variable` 눌러보기
+```
+pm.environment.set("accessToken", pm.response.json().accessToken);
+pm.environment.set("refreshToken", pm.response.json().refreshToken);
+```
+그리고 이렇게 작성하면 된다.  
+json() 이건 body 에 접근한다고 생각하면 된다   
+
+- GET /restaurant 에서 `Authorization 탭` 누르기
+- Type 을 `Bearer Token` 으로 세팅, Token 에다가 `{{accessToken}}` 으로 넣기
