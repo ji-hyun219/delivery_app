@@ -128,3 +128,11 @@ https://ts2ree.tistory.com/305
 #### Dart factory
 
 https://ts2ree.tistory.com/306
+
+&nbsp;
+
+#### firstWhere
+
+https://ts2ree.tistory.com/307
+
+&nbsp;
