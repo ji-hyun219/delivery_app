@@ -88,6 +88,8 @@ json() 이건 body 에 접근한다고 생각하면 된다
 - GET /restaurant 에서 `Authorization 탭` 누르기
 - Type 을 `Bearer Token` 으로 세팅, Token 에다가 `{{accessToken}}` 으로 넣기
 
+&nbsp;
+
 #### 레스토랑 카드 실제 데이터 삽입
 
 ```dart
@@ -101,7 +103,7 @@ tags: List<String>.from(item['tags'])
 ```
 
 이렇게 해야 함
-&nbsp;
+
 `List.from 메서드`를 보면 아래처럼 기술되어 있다.
 
 ```dart
@@ -114,3 +116,7 @@ final List<Map<String, dynamic>> fooData =
     List.from(dynamicList.where((x) => x is Map && x['text'] == 'foo'));
 print(fooData);
 ```
+
+#### Dart 슈퍼 이니셜라이저
+
+https://ts2ree.tistory.com/305
