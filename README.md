@@ -66,9 +66,6 @@ Riverpod 상태관리 툴에 대해 배워봅니다.
 - Paged Based Pagination : 요청을 보낼 때 원하는 데이터 갯수와 몇번째 페이지를 가져올 것인지 명시 (=> 몇 번째 페이지느냐에 따라 skip, take 가 이루어짐)
 - Cursor Based Pagination : 요청을 보낼 때 마지막 데이터의 기준값(ID) 과 몇개의 데이터를 가지고 올 것인지 명시 (=> 모바일에서 사용하는 방식임. start, perPage)
 
-
-
-
 &nbsp;
 
 ### 🧐 12월 11일 학습내용
@@ -79,12 +76,41 @@ Riverpod 상태관리 툴에 대해 배워봅니다.
 - Postman 의 environment 에서 accessToken, refreshToken 변수를 만들고 저장
 - POST /auth/login 에서 `Tests 탭` 누르기 (이 탭에서는 테스트 코드를 짤 수도 있고 실제 코드를 실행할 수 있다. 여기선 후자)
 - 이 탭에 오른쪽에 가이드라인 있으니 그 중 `Set an environmet variable` 눌러보기
+
 ```
 pm.environment.set("accessToken", pm.response.json().accessToken);
 pm.environment.set("refreshToken", pm.response.json().refreshToken);
 ```
+
 그리고 이렇게 작성하면 된다.  
-json() 이건 body 에 접근한다고 생각하면 된다   
+json() 이건 body 에 접근한다고 생각하면 된다
 
 - GET /restaurant 에서 `Authorization 탭` 누르기
 - Type 을 `Bearer Token` 으로 세팅, Token 에다가 `{{accessToken}}` 으로 넣기
+
+#### 레스토랑 카드 실제 데이터 삽입
+
+```dart
+tags: item['tags'] as List<String>
+```
+
+이렇게 해도 에러가 나옴
+
+```dart
+tags: List<String>.from(item['tags'])
+```
+
+이렇게 해야 함
+&nbsp;
+`List.from 메서드`를 보면 아래처럼 기술되어 있다.
+
+```dart
+const jsonArray = '''
+  [{"text": "foo", "value": 1, "status": true},
+   {"text": "bar", "value": 2, "status": false}]
+''';
+final List<dynamic> dynamicList = jsonDecode(jsonArray);
+final List<Map<String, dynamic>> fooData =
+    List.from(dynamicList.where((x) => x is Map && x['text'] == 'foo'));
+print(fooData);
+```
