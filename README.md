@@ -143,3 +143,16 @@ https://ts2ree.tistory.com/307
 
 - final bool isDetail 이렇게 해놓고 this.isdetail = false 하면 상세일 때 true 인자값만 넣어주면 됨
 - final String? detail 은 this.detail 로 받아서 상세내용이 없으면 그대로 null 표시하면 됨
+
+&nbsp;
+
+#### path parameter
+
+GET /restaurant/{rid} -> path parameter 는 `:` 로 표현  
+예) /restaurant/:rid 이렇게 쓰면 됨
+
+- Image.asset -> 이미지 안 커지면 BoxFit 써야겠다
+- 이미지 깎을려면 Cliprrect -> Image.asset
+- 가끔 작업할 때 mainAxisAlignment.spaceBeween 등 안먹었던 이유..!: `IntrinsicHeight` -> 내부에 있는 모든 위젯이 최대의 크기를 차지하게 됨!
+- Row 안에 있는 위젯들은 모두 각각 최소의 children 의 높이만큼 차지하게 된다.
+- 따라서 Row 안에 Column 위젯에다가 spaceBeween 을 해봤자 안먹는 이유는 바로 이 이유이다.
