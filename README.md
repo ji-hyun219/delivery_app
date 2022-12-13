@@ -136,3 +136,10 @@ https://ts2ree.tistory.com/306
 https://ts2ree.tistory.com/307
 
 &nbsp;
+
+### 🧐 12월 13일 학습내용
+
+#### isDetail
+
+- final bool isDetail 이렇게 해놓고 this.isdetail = false 하면 상세일 때 true 인자값만 넣어주면 됨
+- final String? detail 은 this.detail 로 받아서 상세내용이 없으면 그대로 null 표시하면 됨
