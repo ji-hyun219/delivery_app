@@ -163,3 +163,9 @@ GET /restaurant/{rid} -> path parameter 는 `:` 로 표현
 
 - CustomScrollView 안에 일반 위젯 넣을려면 SliverToBoxAdapter 쓰자.
 - list 들은 sliverList
+
+&nbsp;
+
+#### 모델이 중복될 경우
+
+extends 사용, 그리고 super 로 전달!!
