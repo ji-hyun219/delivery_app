@@ -156,3 +156,10 @@ GET /restaurant/{rid} -> path parameter 는 `:` 로 표현
 - 가끔 작업할 때 mainAxisAlignment.spaceBeween 등 안먹었던 이유..!: `IntrinsicHeight` -> 내부에 있는 모든 위젯이 최대의 크기를 차지하게 됨!
 - Row 안에 있는 위젯들은 모두 각각 최소의 children 의 높이만큼 차지하게 된다.
 - 따라서 Row 안에 Column 위젯에다가 spaceBeween 을 해봤자 안먹는 이유는 바로 이 이유이다.
+
+&nbsp;
+
+#### sliverList
+
+- CustomScrollView 안에 일반 위젯 넣을려면 SliverToBoxAdapter 쓰자.
+- list 들은 sliverList
