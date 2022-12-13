@@ -151,11 +151,11 @@ https://ts2ree.tistory.com/307
 GET /restaurant/{rid} -> path parameter 는 `:` 로 표현  
 예) /restaurant/:rid 이렇게 쓰면 됨
 
-- Image.asset -> 이미지 안 커지면 BoxFit 써야겠다
+- Image.asset -> 이미지 안 커지면 BoxFit 써야겠다 
 - 이미지 깎을려면 Cliprrect -> Image.asset
-- 가끔 작업할 때 mainAxisAlignment.spaceBeween 등 안먹었던 이유..!: `IntrinsicHeight` -> 내부에 있는 모든 위젯이 최대의 크기를 차지하게 됨!
-- Row 안에 있는 위젯들은 모두 각각 최소의 children 의 높이만큼 차지하게 된다.
-- 따라서 Row 안에 Column 위젯에다가 spaceBeween 을 해봤자 안먹는 이유는 바로 이 이유이다.
+- 가끔 작업할 때 mainAxisAlignment.spaceBetween 등 안먹었던 이유..!: `IntrinsicHeight` -> 이 위젯을 쓰면 내부에 있는 모든 위젯이 최대의 크기를 차지하게 됨! (그래서 최대의 동일한 높이를 가지게 된다)
+- 원래 Row 안에 있는 위젯들은 각각 모두 최소의 높이만큼 차지하게 된다.
+- 따라서 Row 안에 Column 위젯이 있다면 Column 의 spaceBeween 을 해봤자 안먹는 이유는 바로 이 이유이다. (내용물만큼 높이를 차지하므로 spaceBetween 이 소용없음)
 
 &nbsp;
 
