@@ -1,5 +1,8 @@
+import 'package:delivery_app/common/utils/data_utils.dart';
+import 'package:json_annotation/json_annotation.dart';
+
 import '../../common/const/data.dart';
-import 'restautrant_model.dart';
+import 'restaurant_model.dart';
 
 // RestaurantModel extends 해주고 super 로 전달하면 된다
 class RestaurantDetailModel extends RestaurantModel {
@@ -50,6 +53,9 @@ class RestaurantDetailModel extends RestaurantModel {
 class RestaurantProductModel {
   final String id;
   final String name;
+  @JsonKey(
+    fromJson: DataUtils.pathToUrl,
+  )
   final String imgUrl;
   final String detail;
   final int price;

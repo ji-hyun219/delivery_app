@@ -179,5 +179,6 @@ extends 사용, 그리고 super 로 전달!!
 - Map<String, dynamic> toJson() => \_$RestaurantModelToJson(this); // this 는 현재 클래스
 - @JsonKey -> fromJson 일때 실행하고 싶은 것 넣어주면 됨
 - flutter pub run build_runner watch(build 대신) 하면 파일을 계속 바라볼 수 있다. (파일 저장하면 빌드가 자동적으로 된다는 뜻)
+- VSCode 자동 완성 기능이 있어서 JsonSerializable 은 파악만 하였음
 
 &nbsp;
