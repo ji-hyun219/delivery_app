@@ -1,11 +1,11 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
+import '../../common/const/data.dart';
+import '../../common/layout/default_layout.dart';
 import '../../product/component/product_card.dart';
 import '../../restaurant/component/restaurant_card.dart';
 import '../../restaurant/model/restaurant_detail_model.dart';
-import '../const/data.dart';
-import '../layout/default_layout.dart';
 
 class RestaurantDetailScreen extends StatelessWidget {
   final String id;

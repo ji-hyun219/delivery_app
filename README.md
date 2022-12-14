@@ -151,7 +151,7 @@ https://ts2ree.tistory.com/307
 GET /restaurant/{rid} -> path parameter 는 `:` 로 표현  
 예) /restaurant/:rid 이렇게 쓰면 됨
 
-- Image.asset -> 이미지 안 커지면 BoxFit 써야겠다 
+- Image.asset -> 이미지 안 커지면 BoxFit 써야겠다
 - 이미지 깎을려면 Cliprrect -> Image.asset
 - 가끔 작업할 때 mainAxisAlignment.spaceBetween 등 안먹었던 이유..!: `IntrinsicHeight` -> 이 위젯을 쓰면 내부에 있는 모든 위젯이 최대의 크기를 차지하게 됨! (그래서 최대의 동일한 높이를 가지게 된다)
 - 원래 Row 안에 있는 위젯들은 각각 모두 최소의 높이만큼 차지하게 된다.
@@ -169,3 +169,15 @@ GET /restaurant/{rid} -> path parameter 는 `:` 로 표현
 #### 모델이 중복될 경우
 
 extends 사용, 그리고 super 로 전달!!
+
+&nbsp;
+
+### 🧐 12월 14일 학습내용
+
+#### JsonSerializable
+
+- Map<String, dynamic> toJson() => \_$RestaurantModelToJson(this); // this 는 현재 클래스
+- @JsonKey -> fromJson 일때 실행하고 싶은 것 넣어주면 됨
+- flutter pub run build_runner watch(build 대신) 하면 파일을 계속 바라볼 수 있다. (파일 저장하면 빌드가 자동적으로 된다는 뜻)
+
+&nbsp;

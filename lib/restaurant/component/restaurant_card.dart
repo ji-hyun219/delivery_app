@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../common/const/colors.dart';
-import '../model/restautrant_model.dart';
+import '../model/restaurant_model.dart';
 
 class RestaurantCard extends StatelessWidget {
   final Widget image;
