@@ -1,3 +1,4 @@
+import 'package:delivery_app/common/dio/dio.dart';
 import 'package:delivery_app/restaurant/repository/restaurant_repository.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +15,13 @@ class RestaurantDetailScreen extends StatelessWidget {
 
   Future<RestaurantDetailModel> getRestaurantDetail() async {
     final dio = Dio();
+
+    // dio interceptor 에 추가
+    dio.interceptors.add(
+      CustomInterceptor(
+        storage: storage,
+      ),
+    );
 
     final respository = RestaurantRepository(dio, baseUrl: 'http://$ip/restaurant');
 

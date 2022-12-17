@@ -190,4 +190,29 @@ extends 사용, 그리고 super 로 전달!!
 - api 요청, 그리고 요청 결과값을 모델로 변환해주는 공통 작업을 retrofit 이라는 패키지로 간소화
 - abstract class : 인스턴스화 안되게 선언
 
+#### 토큰 자동 관리하는 방법
+
+- accessToken 이 만료되었을 때(401) 자동으로 리프레시 URL 보내서 다시 accessToken 발급 받아서 다시 재요청하는 로직을 짜는 법을 알아볼 것
+
+```
+  아래 3가지 경우가 함수로 이미 구성되어 있다
+  1. 요청을 보낼때
+  2. 응답을 받을 때
+  3. 에러가 났을 때
+
+  1. 요청을 보낼 때
+  onRequest 에서 헤더를 읽어들일 수 있다 !!!!!!
+  return super.onRequest <-- 여기에서 실제로 요청이 보내진다
+  그래서 그 전에 위에서 값을 변경할 수 있음 options.header 같은 것..
+```
+
+- 아래 과정을 수행하였음
+
+```
+요청이 보내질때마다
+  만약에 요청의 Header에 accessToken: true라는 값이 있다면
+  실제 토큰을 가져와서 (storage에서) authorization: bearer $token으로
+  헤더를 변경한다.
+```
+
 &nbsp;
