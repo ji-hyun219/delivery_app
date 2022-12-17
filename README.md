@@ -193,6 +193,7 @@ extends 사용, 그리고 super 로 전달!!
 #### 토큰 자동 관리하는 방법
 
 - accessToken 이 만료되었을 때(401) 자동으로 리프레시 URL 보내서 다시 accessToken 발급 받아서 다시 재요청하는 로직을 짜는 법을 알아볼 것
+- dio 의 interceptor 기능 유용, 이를 사용해볼 것 (onRequest.. 재정의)
 
 ```
   아래 3가지 경우가 함수로 이미 구성되어 있다
@@ -214,5 +215,15 @@ extends 사용, 그리고 super 로 전달!!
   실제 토큰을 가져와서 (storage에서) authorization: bearer $token으로
   헤더를 변경한다.
 ```
+
+#### 에러가 났을 때 핸들링
+
+- Interceptor: 가로챈다. 요청이 보내지기 전에 처리. 즉 `onRequest` 에서 요청이 보내지기 전에 처리한다고 생각하면 됨
+- `return super.onRequest(options, handler)` --> handler 에서 `요청을 보낼지 또는 에러를 생성시킬지 결정`
+
+- handler.reject : 이 메서드를 사용하면 에러를 발생시킬 수 있다
+- handler.resolve : 에러 없이 요청을 끝낼 수 있다. 그래서 handler.resolve(response) 에서 response 에서 응답을 받아와서 handler 안에 넣어줘야 한다
+- 정리: reject 이용하면 원래대로 에러가 나고 resolve 를 사용해야 함 (에러가 난 상태라도 요청이 성공적임을 반환)
+- dio.fetch : 요청 재전송 (원래 우리가 보내려던 요청 == err.requestOptions)
 
 &nbsp;
