@@ -1,3 +1,4 @@
+import 'package:delivery_app/restaurant/repository/restaurant_repository.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
@@ -11,21 +12,12 @@ class RestaurantDetailScreen extends StatelessWidget {
   final String id;
   const RestaurantDetailScreen({Key? key, required this.id}) : super(key: key);
 
-  Future<Map<String, dynamic>> getRestaurantDetail() async {
+  Future<RestaurantDetailModel> getRestaurantDetail() async {
     final dio = Dio();
 
-    final accessToken = await storage.read(key: ACCESS_TOKEN_KEY);
+    final respository = RestaurantRepository(dio, baseUrl: 'http://$ip/restaurant');
 
-    final resp = await dio.get(
-      'http://$ip/restaurant/$id',
-      options: Options(
-        headers: {
-          'authorization': 'Bearer $accessToken',
-        },
-      ),
-    );
-
-    return resp.data;
+    return respository.getRestaurantDetail(id: id);
   }
 
   @override
@@ -51,27 +43,33 @@ class RestaurantDetailScreen extends StatelessWidget {
         //     ),
         //   ],
         // ),
-        child: FutureBuilder<Map<String, dynamic>>(
+        child: FutureBuilder<RestaurantDetailModel>(
           future: getRestaurantDetail(),
-          builder: (_, AsyncSnapshot<Map<String, dynamic>> snapshot) {
+          builder: (_, AsyncSnapshot<RestaurantDetailModel> snapshot) {
+            if (snapshot.hasError) {
+              return Center(child: Text(snapshot.error.toString()));
+            }
+
             if (!snapshot.hasData) {
               return const Center(
                 child: CircularProgressIndicator(),
               );
             }
 
-            final item = RestaurantDetailModel.fromJson(
-              json: snapshot.data!,
-            );
+            // final item = RestaurantDetailModel.fromJson(
+            //   json: snapshot.data!,
+            // );
+            // 위 코드가 필요 없어짐
+            // 왜냐, snapshot 에서 바로 모델 되서 나옴
 
             return CustomScrollView(
               slivers: [
                 renderTop(
-                  model: item,
+                  model: snapshot.data!,
                 ),
                 renderLabel(),
                 renderProducts(
-                  products: item.products,
+                  products: snapshot.data!.products,
                 ),
               ],
             );

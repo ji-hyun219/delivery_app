@@ -182,3 +182,12 @@ extends 사용, 그리고 super 로 전달!!
 - VSCode 자동 완성 기능이 있어서 JsonSerializable 은 파악만 하였음
 
 &nbsp;
+
+### 🧐 12월 17일 학습내용
+
+#### retrofit
+
+- api 요청, 그리고 요청 결과값을 모델로 변환해주는 공통 작업을 retrofit 이라는 패키지로 간소화
+- abstract class : 인스턴스화 안되게 선언
+
+&nbsp;
