@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import '../const/data.dart';
+import 'dart:developer' as dev;
 
 class CustomInterceptor extends Interceptor {
   // storage 가져와야 함
@@ -26,7 +27,7 @@ class CustomInterceptor extends Interceptor {
   // 헤더를 변경한다.
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) async {
-    print('[REQ] [${options.method}] ${options.uri}');
+    dev.log('[REQ] [${options.method}] ${options.uri}');
 
     if (options.headers['accessToken'] == 'true') {
       // 헤더 삭제
@@ -58,7 +59,7 @@ class CustomInterceptor extends Interceptor {
   // 2) 응답을 받을 때
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) {
-    print('[RES] [${response.requestOptions.method}] ${response.requestOptions.uri}');
+    dev.log('[RES] [${response.requestOptions.method}] ${response.requestOptions.uri}');
 
     return super.onResponse(response, handler);
   }
@@ -69,7 +70,7 @@ class CustomInterceptor extends Interceptor {
     // 401 에러가 났을때 (status code)
     // 토큰을 재발급 받는 시도를하고 토큰이 재발급되면
     // 다시 새로운 토큰으로 요청을한다.
-    print('[ERR] [${err.requestOptions.method}] ${err.requestOptions.uri}');
+    dev.log('[ERR] [${err.requestOptions.method}] ${err.requestOptions.uri}');
 
     final refreshToken = await storage.read(key: REFRESH_TOKEN_KEY);
 
