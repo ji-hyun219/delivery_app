@@ -4,6 +4,7 @@ import 'package:delivery_app/restaurant/model/restaurant_model.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
+import '../../common/dio/dio.dart';
 import 'restaurant_detail_screen.dart';
 
 class RestaurantScreen extends StatelessWidget {
@@ -11,6 +12,10 @@ class RestaurantScreen extends StatelessWidget {
 
   Future<List> paginateRestaurant() async {
     final dio = Dio();
+
+    dio.interceptors.add(
+      CustomInterceptor(storage: storage),
+    );
 
     final accessToken = await storage.read(key: ACCESS_TOKEN_KEY);
 

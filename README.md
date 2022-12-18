@@ -227,3 +227,34 @@ extends 사용, 그리고 super 로 전달!!
 - dio.fetch : 요청 재전송 (원래 우리가 보내려던 요청 == err.requestOptions)
 
 &nbsp;
+
+### 🧐 12월 18일 학습내용
+
+#### 제너릭 T
+
+- 페이지네이션할 때 비슷한 모델이 계속 재사용됨 -> 제너릭으로 확장성있게 사용해보기
+- 아래 코드를 이해하자!
+
+```dart
+factory CursorPagination.fromJson(Map<String, dynamic> json, T Function(Object? json) fromJsonT) =>
+      _$CursorPaginationFromJson(json, fromJsonT);
+```
+
+- T 를 반환하는 함수
+
+&nbsp;
+
+```dart
+CursorPagination<T> _$CursorPaginationFromJson<T>(
+  Map<String, dynamic> json,
+  T Function(Object? json) fromJsonT,
+) =>
+    CursorPagination<T>(
+      meta: CursorPaginationMeta.fromJson(json['meta'] as Map<String, dynamic>),
+      data: (json['data'] as List<dynamic>).map(fromJsonT).toList(),
+    );
+```
+
+- data 부분을 살펴보자
+
+&nbsp;
