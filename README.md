@@ -219,7 +219,7 @@ extends 사용, 그리고 super 로 전달!!
 #### 에러가 났을 때 핸들링
 
 - Interceptor: 가로챈다. 요청이 보내지기 전에 처리. 즉 `onRequest` 에서 요청이 보내지기 전에 처리한다고 생각하면 됨
-- `return super.onRequest(options, handler)` --> handler 에서 `요청을 보낼지 또는 에러를 생성시킬지 결정`
+- `return super.onRequest(options, handler)` --> 여기에서 실제로 요청이 보내진다. handler 에서 `요청을 보낼지 또는 에러를 생성시킬지 결정`한다.
 
 - handler.reject : 이 메서드를 사용하면 에러를 발생시킬 수 있다
 - handler.resolve : 에러 없이 요청을 끝낼 수 있다. 그래서 handler.resolve(response) 에서 response 에서 응답을 받아와서 handler 안에 넣어줘야 한다
