@@ -258,3 +258,56 @@ CursorPagination<T> _$CursorPaginationFromJson<T>(
 - data 부분을 살펴보자
 
 &nbsp;
+
+### 🧐 12월 25일 학습내용
+
+#### dio 에 Provider 적용
+
+- Provider 안에 dio
+- 앞으로 Global 하게 쓰일 것들은 Provider 에서 관리..(공통된 값을 참조할 수 있도록!)
+
+```dart
+  Future<RestaurantDetailModel> getRestaurantDetail() async {
+    final dio = Dio();
+
+    dio.interceptors.add(
+      CustomInterceptor(
+        storage: storage, // /common/storage 에서 import
+      ),
+    );
+
+    final repository = RestaurantRepository(dio, baseUrl: 'http://$ip/restaurant');
+
+    return repository.getRestaurantDetail(id: id);
+  }
+```
+
+- 원래는 위의 코드를 계속 화면마다 중복해서 썼었음. 이를 Provider 를 사용해서 개선.
+
+```dart
+final dioProvider = Provider((ref) {
+  final dio = Dio();
+
+  final storage = ref.watch(secureStorageProvider);
+
+  dio.interceptors.add(
+    CustomInterceptor(storage: storage),
+  );
+
+  return dio;
+});
+```
+
+- dioProvider 를 생성하고 storageProvider 를 따로 만들어서 `dioProvider 안에 넣어준다` (12월 22일 학습내용 참고)
+
+```dart
+  Future<RestaurantDetailModel> getRestaurantDetail(WidgetRef ref) async {
+    final dio = ref.watch(dioProvider);
+
+    final respository = RestaurantRepository(dio, baseUrl: 'http://$ip/restaurant');
+
+    return respository.getRestaurantDetail(id: id);
+  }
+```
+
+- 그리고 위와 같이 화면에 FutureBuilder 를 사용
