@@ -311,3 +311,45 @@ final dioProvider = Provider((ref) {
 ```
 
 - 그리고 위와 같이 화면에 FutureBuilder 를 사용
+
+&nbsp;
+
+#### Repository Provider
+
+- Repository 에도 Provider 사용해보자.
+- 나중에 여러 Repository 가 생기면 dio 똑같이 watch 해주면 같은 하나의 dio 를 바라볼 수 있다
+
+```dart
+ Future<RestaurantDetailModel> getRestaurantDetail(WidgetRef ref) async {
+    final dio = ref.watch(dioProvider);
+
+    final repository = RestaurantRepository(dio, baseUrl: 'http://$ip/restaurant');
+
+    return repository.getRestaurantDetail(id: id);
+  }
+```
+
+- 위는 원래 코드인데 이를 한 줄로 줄여볼 수 있다.
+
+```dart
+final restaurantRepositoryProvider = Provider<RestaurantRepository>(
+  // 또 다른 레포지토리가 생기면 그에 맞는 제너릭 타입을 넣어주면 된다
+  (ref) {
+    final dio = ref.watch(dioProvider);
+
+    final repository = RestaurantRepository(dio, baseUrl: 'http://$ip/restaurant');
+
+    return repository;
+  },
+);
+```
+
+- 먼저 해당 Repository Provider 는 위와 같이 정의를 해주고,
+
+```dart
+future: ref.watch(restaurantRepositoryProvider).getRestaurantDetail(
+          id: id,
+        ),
+```
+
+- 첫번째 코드가 아닌, futureBuilder 에서 위와 같이 한 줄로 사용한다

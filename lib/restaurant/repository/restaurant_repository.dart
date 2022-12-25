@@ -1,11 +1,25 @@
 import 'package:delivery_app/restaurant/model/restaurant_detail_model.dart';
 import 'package:dio/dio.dart' hide Headers;
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:retrofit/retrofit.dart';
 
+import '../../common/const/data.dart';
+import '../../common/dio/dio.dart';
 import '../model/cursor_pagination_model.dart';
 import '../model/restaurant_model.dart';
 
 part 'restaurant_repository.g.dart';
+
+final restaurantRepositoryProvider = Provider<RestaurantRepository>(
+  // 또 다른 레포지토리가 생기면 그에 맞는 제너릭 타입을 넣어주면 된다
+  (ref) {
+    final dio = ref.watch(dioProvider);
+
+    final repository = RestaurantRepository(dio, baseUrl: 'http://$ip/restaurant');
+
+    return repository;
+  },
+);
 
 @RestApi()
 abstract class RestaurantRepository {
