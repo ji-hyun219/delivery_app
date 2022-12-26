@@ -353,3 +353,25 @@ future: ref.watch(restaurantRepositoryProvider).getRestaurantDetail(
 ```
 
 - 첫번째 코드가 아닌, futureBuilder 에서 위와 같이 한 줄로 사용한다
+
+&nbsp;
+
+### 🧐 12월 26일 학습내용
+
+#### StateNotifier 로 캐시 관리
+
+- FutureBuilder 나 StreamBuilder 는 데이터를 한번 불러온 이력이 있으면 캐싱이 되어 있다
+- 다른데에서도 캐시를 가져올 수 있을까 (원래는 불가능한데 riverpod 를 이용해서 해보자)
+- 직접 캐시를 만들어볼 것이다 (`state notifier` 를 이용해야 함)
+- 왜냐 메서드를 많이 만들어서 클래스 안에 집어넣어줄거니까
+- state notifier 안에 super 안에 리스트를 넣어주고 위젯에서는 이 상태를 지켜보다가 이 super 값이 변하면 화면에 새로운 값을 렌더링해줄 것이다
+
+```dart
+  RestaurantStateNotifier({
+    required this.repository,
+  }) : super([]) {
+    paginate();
+    // 이렇게 paginate 함수를 넣어주면 이 클래스 StateNotifier 가 생성이 되자마자
+    // 페이지네이션을 시작하게 된다
+  }
+```
