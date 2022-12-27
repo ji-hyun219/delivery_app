@@ -134,3 +134,16 @@ future: ref.watch(restaurantRepositoryProvider).getRestaurantDetail(
     // 페이지네이션을 시작하게 된다
   }
 ```
+
+&nbsp;
+
+### 🧐 12월 27일 학습내용
+
+#### CursorPagination 의 abstract class 작성
+
+- 'cursor_pagination_model.dart'
+- 계속 `extends` 하는 형태
+- refetching => 다시 처음부터 불러오기 (= 새로고침)
+- refetching 은 데이터가 있는 상태이니깐 CursorPagination 을 extends 하면 됨
+- 근데 extends 하면 CursorPaginationBase 도 extends 한 상태가 되어버린다
+- CursorPaginationBase 은 참고로 데이터가 없는 상태 == 로딩이거나 에러인 상태
