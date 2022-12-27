@@ -1,6 +1,6 @@
-import 'package:delivery_app/restaurant/model/cursor_pagination_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../common/model/cursor_pagination_model.dart';
 import '../repository/restaurant_repository.dart';
 
 // Provider

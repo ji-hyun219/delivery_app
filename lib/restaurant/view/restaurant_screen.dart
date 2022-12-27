@@ -1,8 +1,8 @@
 import 'package:delivery_app/restaurant/component/restaurant_card.dart';
-import 'package:delivery_app/restaurant/model/cursor_pagination_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../common/model/cursor_pagination_model.dart';
 import '../provider/restaurant_provider.dart';
 import 'restaurant_detail_screen.dart';
 

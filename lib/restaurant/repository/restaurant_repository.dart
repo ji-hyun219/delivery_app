@@ -5,8 +5,8 @@ import 'package:retrofit/retrofit.dart';
 
 import '../../common/const/data.dart';
 import '../../common/dio/dio.dart';
+import '../../common/model/cursor_pagination_model.dart';
 import '../../common/model/pagination_params.dart';
-import '../model/cursor_pagination_model.dart';
 import '../model/restaurant_model.dart';
 
 part 'restaurant_repository.g.dart';
