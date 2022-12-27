@@ -147,3 +147,19 @@ future: ref.watch(restaurantRepositoryProvider).getRestaurantDetail(
 - refetching 은 데이터가 있는 상태이니깐 CursorPagination 을 extends 하면 됨
 - 근데 extends 하면 CursorPaginationBase 도 extends 한 상태가 되어버린다
 - CursorPaginationBase 은 참고로 데이터가 없는 상태 == 로딩이거나 에러인 상태
+
+&nbsp;
+
+#### 쿼리파라미터 추가
+
+- CursorPaginationBase 을 하면 작성한 6 가지의 상태를 활용할 수 있다
+- @Quries 값을 붙이면 쿼리 파라미터로 json serialize 된다
+
+```dart
+Future<CursorPagination<RestaurantModel>> paginate({
+    // 쿼리 파라미터 생성e
+    @Queries() PaginationParams? paginationParams = const PaginationParams(),
+  });
+```
+
+- restaurantProvider 를 반복해서 보자(이해하기 어렵다..) 그리고 쿼리 파라미터 생성한게 다임

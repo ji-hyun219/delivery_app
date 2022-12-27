@@ -1,7 +1,5 @@
 import 'package:delivery_app/restaurant/component/restaurant_card.dart';
 import 'package:delivery_app/restaurant/model/cursor_pagination_model.dart';
-import 'package:delivery_app/restaurant/model/restaurant_model.dart';
-import 'package:delivery_app/restaurant/repository/restaurant_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -16,18 +14,20 @@ class RestaurantScreen extends ConsumerWidget {
     final data = ref.watch(restaurantProvider);
     // restaurantProvider 가 한번 생성이 되면 계속 기억이 된다
 
-    if (data.isEmpty) {
+    if (data is CursorPaginationLoading) {
       return const Center(
         child: CircularProgressIndicator(),
       );
     }
 
+    final cp = data as CursorPagination; // 이렇게 하면 안되지만 일단 보류
+
     return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: ListView.separated(
-          itemCount: data.length,
+          itemCount: cp.data.length,
           itemBuilder: (_, index) {
-            final pItem = data[index];
+            final pItem = cp.data[index];
 
             return GestureDetector(
               onTap: () {
