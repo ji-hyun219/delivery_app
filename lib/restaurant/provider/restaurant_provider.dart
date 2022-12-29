@@ -35,7 +35,15 @@ class RestaurantStateNotifier extends StateNotifier<CursorPaginationBase> {
     // 왜냐, CursorPaginationLoading 은 CursorPaginationBase 타입이면서 데이터의 초기 상태(= 로딩)이기 때문
   }
 
-  paginate() async {
+  paginate({
+    int fetchCount = 20,
+    bool fetchMore = false,
+    // 추가로 데이터 더 가져오기
+    // false - 새로고침 (현재 상태를 덮어 씌움)
+    bool fetchRefresh = false,
+    // 강제로 다시 로딩하기
+    // true - CursorPaginationLoading
+  }) async {
     final resp = await repository.paginate();
 
     state = resp;

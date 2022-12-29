@@ -163,3 +163,21 @@ Future<CursorPagination<RestaurantModel>> paginate({
 ```
 
 - restaurantProvider 를 반복해서 보자(이해하기 어렵다..) 그리고 쿼리 파라미터 생성한게 다임
+
+&nbsp;
+
+#### 페이지네이션 모델의 여러가지 상태 정의
+
+- fetchMore 가 true 이면, 현재 상태 유지한 상태에서 새로고침
+- forceRefetch : 강제로 다시 로딩하기 (데이터 다 지워버리고 새로고침)
+
+```
+5가지 가능성
+State 의 상태
+[상태가]
+1) CursorPagination - 정상적으로 데이터가 있는 상태
+2) CursorPahinationLoading - 데이터가 로딩 중인 상태 (현재 캐시 없음) (forceRefetch 가 true 인 상태)
+3) CursorPaginationError - 에러가 있는 상태
+4) CursorPaginationRefetching - 첫번째 페이지부터 다시 데이터를 가져올 때
+5) CursorPaginationFetchMore - 추가 데이터를 paginate 해오라는 요청을 받았을 때
+```
