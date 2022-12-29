@@ -181,3 +181,51 @@ State 의 상태
 4) CursorPaginationRefetching - 첫번째 페이지부터 다시 데이터를 가져올 때
 5) CursorPaginationFetchMore - 추가 데이터를 paginate 해오라는 요청을 받았을 때
 ```
+
+&nbsp;
+
+### 🧐 12월 29일 학습내용
+
+#### 페이지네이션 코드에서 바로 반환해야 하는 상황
+
+1. `hasmore = false`
+
+- 즉, 기존 상태에서 이미 다음 데이터가 없다는 값을 들고 있다면 바로 반환해줘야 함
+
+2. 로딩중 - `fetchMore: true`
+
+- 다음 데이터가 들어오기도 전에 또 요청하면 중복이다, 그걸 방지
+
+&nbsp;
+
+#### 페이지네이션 코드에서 바로 반환 안해줘야 하는 상황
+
+`반환 안해줘야 할 때는`
+
+fetchMore 가 아닐 때 .. 즉 새로고침의 의도가 있을 수 있다. 이때는 페이지네이션 코드를 실행해줘야 함
+
+&nbsp;
+
+```dart
+// 페이지네이션일 때
+if (state is CursorPagination && !forceRefetch) {
+      // forceRefetch 가 false (true 이면 강제로 새로고침이 필요한 상태)
+      final pState = state as CursorPagination;
+      // as 는 무조건 어떤 타입이 들어올 때 써줌
+      // 런타임에 공표를 해주는 것
+
+      if (!pState.meta.hasMore) {
+        return;
+      }
+    }
+
+    final isLoading = state is CursorPaginationLoading;
+    final isRefetching = state is CursorPaginationRefetching;
+    // isRefetching 변수: 데이터가 있는데 유저가 새로고침을 의도한 상태
+    final isFetchingMore = state is CursorPaginationFetchingMore;
+
+    // 2번 반환 상황
+    if (fetchMore && (isLoading || isRefetching || isFetchingMore)) {
+      return;
+    }
+```
