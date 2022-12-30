@@ -2,7 +2,22 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../common/model/cursor_pagination_model.dart';
 import '../../common/model/pagination_params.dart';
+import '../model/restaurant_model.dart';
 import '../repository/restaurant_repository.dart';
+
+// 기존 문제점
+// 디테일 페이지로 가면 계속 로딩바가 나옴
+// --> DetailProvider 새로 하나 생성
+final restaurantDetailProvider = Provider.family<RestaurantModel?, String>((ref, id) {
+  final state = ref.watch(restaurantProvider);
+  // restaurantProvider 가 변하는지 watch
+
+  if (state is! CursorPagination<RestaurantModel>) {
+    return null;
+  }
+
+  return state.data.firstWhere((element) => element.id == id);
+});
 
 // Provider
 final restaurantProvider = StateNotifierProvider<RestaurantStateNotifier, CursorPaginationBase>(

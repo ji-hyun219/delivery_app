@@ -294,3 +294,23 @@ void scrollListener() {
     }
   }
 ```
+
+&nbsp;
+
+#### 캐시관리
+
+- 기존 문제점
+- 디테일 페이지로 가면 계속 로딩바가 나옴 --> 해결책: `DetailProvider` 새로 하나 생성
+
+```dart
+final restaurantDetailProvider = Provider.family<RestaurantModel?, String>((ref, id) {
+  final state = ref.watch(restaurantProvider);
+  // restaurantProvider 가 변하는지 watch
+
+  if (state is! CursorPagination<RestaurantModel>) {
+    return null;
+  }
+
+  return state.data.firstWhere((element) => element.id == id);
+});
+```
