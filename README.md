@@ -229,3 +229,46 @@ if (state is CursorPagination && !forceRefetch) {
       return;
     }
 ```
+
+&nbsp;
+
+### 🧐 12월 30일 학습내용
+
+#### CursorPaginationFetchingMore 상태 작성
+
+- is 는 클래스의 인스턴스인지 검사
+- 코드 계속 보기
+
+```dart
+ // fetchMore
+    // 데이터를 추가로 더 가져오는 상황
+    if (fetchMore) {
+      final pState = state as CursorPagination;
+
+      state = CursorPaginationFetchingMore(
+        meta: pState.meta,
+        data: pState.data,
+      );
+
+      paginationParams = paginationParams.copyWith(
+        after: pState.data.last.id,
+      );
+    }
+
+    final resp = await repository.paginate(
+      paginationParams: paginationParams,
+    );
+
+    if (state is CursorPaginationFetchingMore) {
+      final pState = state as CursorPaginationFetchingMore;
+
+      // 기존 데이터에
+      // 새로운 데이터 추가
+      state = resp.copyWith(
+        data: [
+          ...pState.data,
+          ...resp.data,
+        ],
+      );
+    }
+```
