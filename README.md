@@ -272,3 +272,25 @@ if (state is CursorPagination && !forceRefetch) {
       );
     }
 ```
+
+&nbsp;
+
+#### 완성된 Pagination 로직 실행해보기
+
+- ListView 에서 scrollController 추가
+- scrollController.offset: 현재 스크롤 위치를 가져올 수 있음
+- scrollController.position.maxScrollExtent : 최대 스크롤 가능 길이
+- 바닥 스크롤보다 300 픽셀이 넘어가면 요청 실행
+
+```dart
+void scrollListener() {
+    // 현재 위치가
+    // 최대 길이보다 조금 덜되는 위치까지 왔다면
+    // 새로운 데이터를 추가요청
+    if (controller.offset > controller.position.maxScrollExtent - 300) {
+      ref.read(restaurantProvider.notifier).paginate(
+            fetchMore: true,
+          );
+    }
+  }
+```
