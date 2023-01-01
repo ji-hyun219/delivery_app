@@ -31,10 +31,10 @@ class RestaurantDetailScreen extends ConsumerWidget {
             renderTop(
               model: state,
             ),
-            renderLabel(),
-            renderProducts(
-              products: snapshot.data!.products,
-            ),
+            // renderLabel(),
+            // renderProducts(
+            //   products: snapshot.data!.products,
+            // ),
           ],
         ));
   }
