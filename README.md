@@ -192,7 +192,7 @@ dart 에서 기본 제공임
 
 ```dart
   ListView(
-      scrollDirection: Axis.horizontal, // 좌우인 경우 높이 지정해줘야 함, 위 아래는 높이 지정 필요 X
+      scrollDirection: Axis.horizontal, // 스크롤 좌우인 경우 높이 지정해줘야 함, 수직은 높이 지정 필요 X
       children: images
           .mapIndexed(
             (index, e) => Padding(
