@@ -131,3 +131,25 @@ ref.read(restaurantProvider.notifier).getDetail(id: widget.id);
           .toList(),
     );
 ```
+
+&nbsp;
+
+#### Hero 위젯
+
+- tag 값으로 위젯을 연결 애니메이션 효과 (신기..)
+
+```dart
+if (heroKey != null)
+          Hero(
+            tag: ObjectKey(heroKey),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(isDetail ? 0 : 12.0),
+              child: image,
+            ),
+          ),
+        if (heroKey == null)
+          ClipRRect(
+            borderRadius: BorderRadius.circular(isDetail ? 0 : 12.0),
+            child: image,
+          ),
+```
