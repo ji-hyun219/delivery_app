@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:skeletons/skeletons.dart';
 
 import '../../common/layout/default_layout.dart';
 import '../../product/component/product_card.dart';
@@ -42,6 +43,7 @@ class _RestaurantDetailScreenState extends ConsumerState<RestaurantDetailScreen>
             renderTop(
               model: state,
             ),
+            if (state is! RestaurantDetailModel) renderLoading(),
             if (state is RestaurantDetailModel) renderLabel(),
             if (state is RestaurantDetailModel)
               renderProducts(
@@ -49,6 +51,31 @@ class _RestaurantDetailScreenState extends ConsumerState<RestaurantDetailScreen>
               ),
           ],
         ));
+  }
+
+  SliverPadding renderLoading() {
+    return SliverPadding(
+      padding: const EdgeInsets.symmetric(
+        vertical: 16.0,
+        horizontal: 16.0,
+      ),
+      sliver: SliverList(
+        delegate: SliverChildListDelegate(
+          List.generate(
+            3,
+            (index) => Padding(
+              padding: const EdgeInsets.only(bottom: 32.0),
+              child: SkeletonParagraph(
+                style: const SkeletonParagraphStyle(
+                  lines: 5,
+                  padding: EdgeInsets.zero,
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
   }
 
   SliverPadding renderLabel() {
