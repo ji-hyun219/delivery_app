@@ -153,3 +153,19 @@ if (heroKey != null)
             child: image,
           ),
 ```
+
+&nbsp;
+
+#### Rating Card UI
+
+- ImageProvider
+
+```
+NetworkImage
+AssetImage
+```
+
+이런 것들은 `ImageProvider` 라고 함
+
+- `CircleAvatar` 는 기본 위젯임
+- `...List.generate` (Row 같은 것 안에 풀어놓는 방법)

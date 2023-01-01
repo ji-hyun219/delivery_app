@@ -4,6 +4,7 @@ import 'package:skeletons/skeletons.dart';
 
 import '../../common/layout/default_layout.dart';
 import '../../product/component/product_card.dart';
+import '../../rating/component/rating_card.dart';
 import '../../restaurant/component/restaurant_card.dart';
 import '../../restaurant/model/restaurant_detail_model.dart';
 import '../model/restaurant_model.dart';
@@ -49,6 +50,18 @@ class _RestaurantDetailScreenState extends ConsumerState<RestaurantDetailScreen>
               renderProducts(
                 products: state.products,
               ),
+            const SliverPadding(
+              padding: EdgeInsets.symmetric(horizontal: 16.0),
+              sliver: SliverToBoxAdapter(
+                child: RatingCard(
+                  rating: 4,
+                  email: 'jc@codefactory.ai',
+                  images: [],
+                  avatarImage: AssetImage('asset/img/logo/codefactory_logo.png'),
+                  content: '맛있습니다.',
+                ),
+              ),
+            ),
           ],
         ));
   }
