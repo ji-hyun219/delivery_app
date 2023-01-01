@@ -169,3 +169,4 @@ AssetImage
 
 - `CircleAvatar` 는 기본 위젯임
 - `...List.generate` (Row 같은 것 안에 풀어놓는 방법)
+- `Flexible` 위젯 안에 `Text` 는 줄이 넘어가면 잘리지 않고 다음 줄로 넘어간다는 특성이 있다

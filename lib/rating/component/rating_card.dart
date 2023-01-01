@@ -91,11 +91,27 @@ class _Header extends StatelessWidget {
 }
 
 class _Body extends StatelessWidget {
-  const _Body({Key? key}) : super(key: key);
+  final String content;
+  const _Body({
+    Key? key,
+    required this.content,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Row(
+      children: [
+        Flexible(
+          child: Text(
+            content,
+            style: const TextStyle(
+              color: BODY_TEXT_COLOR,
+              fontSize: 14.0,
+            ),
+          ),
+        ),
+      ],
+    );
   }
 }
 
