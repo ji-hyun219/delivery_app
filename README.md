@@ -170,3 +170,40 @@ AssetImage
 - `CircleAvatar` 는 기본 위젯임
 - `...List.generate` (Row 같은 것 안에 풀어놓는 방법)
 - `Flexible` 위젯 안에 `Text` 는 줄이 넘어가면 잘리지 않고 다음 줄로 넘어간다는 특성이 있다
+
+&nbsp;
+
+#### ListView - mapIndexed
+
+```dart
+ListView(
+  children: images.map(e, index) => null, // dart 에선 불가능
+)
+```
+
+내가 항상 헤맸던거  
+js 는 `index` 를 받아올 수 있지만 dart 는 `불가능`
+
+`extenstion 기능`을 이용해보자.  
+import 'package:collection/collection.dart'  
+dart 에서 기본 제공임
+
+`mapIndexed`
+
+```dart
+  ListView(
+      scrollDirection: Axis.horizontal, // 좌우인 경우 높이 지정해줘야 함, 위 아래는 높이 지정 필요 X
+      children: images
+          .mapIndexed(
+            (index, e) => Padding(
+              padding: EdgeInsets.only(
+                right: index == images.length - 1 ? 0 : 16.0,
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(8.0),
+                child: e,
+              ),
+            ),
+          )
+          .toList(), //
+```
