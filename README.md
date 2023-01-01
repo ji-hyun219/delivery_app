@@ -207,3 +207,20 @@ dart 에서 기본 제공임
           )
           .toList(), //
 ```
+
+&nbsp;
+
+#### Rating Card Provider
+
+http://ip/restaurant/:rid/rating
+
+```dart
+final restaurantRatingRepositoryProvider = Provider.family<RestaurantRatingRepository, String>((ref, id) {
+  final dio = ref.watch(dioProvider);
+
+  return RestaurantRatingRepository(dio, baseUrl: 'http://$ip/restaurant/$id/rating');
+});
+```
+
+family -> 어떤 `rid 값`인지 받아야 하기 때문  
+RestaurantProvider 처럼 `ref` 를 통해 `dio` 가져오고 `baseUrl 지정`해주면 됨
