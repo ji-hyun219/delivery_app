@@ -88,3 +88,46 @@ final restaurantDetailProvider = Provider.family<RestaurantModel?, String>((ref,
 ```
 
 - state is! CursorPagination 이 부분은 데이터가 없을 경우를 말함. 그래서 null 리턴
+- restaurantDetailProvider 는 restaurantProvider 가 변하면 watch 를 하고 있기 때문에 restaurantDetailProvider 도 다시 빌드된다.
+
+&nbsp;
+
+### 🧐 1월 1일 학습내용
+
+#### Restaurant Detail 캐싱하기
+
+- List 페이지와 상세 페이지 겹치는 정보는 또 불러올 필요 없이 캐시하고 있을 것 (DetailProvider)
+- 나머지 아래 상세 정보는 캐시되고 있고, 상세 페이지 다시 들어가면 캐시된 상태에서 API 호출이기 때문에 속도가 빠른 것처럼 보인다.
+- 다른 상세를 클릭해도 각각의 상세페이지의 캐시가 기억됨
+
+```dart
+// 상세페이지의 initState 부분
+ref.read(restaurantProvider.notifier).getDetail(id: widget.id);
+```
+
+- restaurantDetailProvider 아님
+- `restaurantProvider 가 변경`이 되면 `restaurantDetailProvider 가 다시 빌드`되기 때문이다
+- 디테일 화면에 올 때마다 이 코드가 실행된다 (= 상세 정보를 갖고 와라)
+
+&nbsp;
+
+- getDetail 함수 내부는 다음과 같다
+
+```dart
+ final pState = state as CursorPagination; // 데이터 존재
+
+    final resp = await repository.getRestaurantDetail(id: id);
+    // resp 는 RestaurantDetail Model 임
+
+    // [RestaurantMode(1), RestaurantModel(2), RestaurantModel(3)]
+    // id : 2인 친구를 Detail모델을 가져와라
+    // getDetail(id: 2);
+    // [RestaurantMode(1), RestaurantDetailModel(2), RestaurantModel(3)]
+    state = pState.copyWith(
+      data: pState.data
+          .map<RestaurantModel>(
+            (e) => e.id == id ? resp : e,
+          )
+          .toList(),
+    );
+```
