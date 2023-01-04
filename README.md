@@ -315,8 +315,6 @@ class PaginationProvider extends StateNotifier<CursorPaginationBase> {
   Future<void> paginate({
 ```
 
-&nbsp;
-
 7. IBasePaginationRepository 타입이 너무 일반화되어 있는 것을 수정해보자
 
 ```dart
@@ -331,3 +329,73 @@ class PaginationProvider<U extends IBasePaginationRepository> extends StateNotif
 ```
 
 - U 를 extends 하는 이유: dart 에서는 제너릭에서 implements 라는 키워드를 쓸 수 없다
+
+&nbsp;
+
+8. paginate 함수에서 data 는 dynamic 타입임
+
+```dart
+
+ state = CursorPaginationFetchingMore(
+          meta: pState.meta,
+          data: pState.data,
+        );
+
+
+ paginationParams = paginationParams.copyWith(
+          after: pState.data.last.id, // 대강 마지막 데이터에는 id 가 있겠지하고 컴파일러는 생각한다
+        );
+```
+
+- 이는 좋지 않다 -> dynamic 줄이자
+- CursorPaginationFetchingMore 클릭하면 `<T>` 로 받는 것을 볼 수 있다
+
+- id 값을 가지는 모델 인터페이스 생성
+
+```dart
+abstract class IModelWithId {
+  final String id;
+
+  IModelWithId({
+    required this.id,
+  });
+}
+
+// 이 모델을 implements 하면 그들은 모두 이 id 값이 강제로 들어감
+```
+
+- Restaurant Model 등 IModelWithId 를 `implements` 시키자
+- 그 후 id 값을 한번 지워보면
+
+```
+Missing concrete implementation of 'getter IModelWithId.id'.
+Try implementing the missing method, or make the class abstract.
+```
+
+&nbsp;
+
+9. PaginationProvider 에 IModelWithId 라는 T 값 추가하고, IBasePaginationRepository 정의에 T 는 IModelWithId 를 extends 시키자
+
+```dart
+abstract class IBasePaginationRepository<T extends IModelWithId> {
+  Future<CursorPagination<T>> paginate({
+    PaginationParams? paginationParams = const PaginationParams(),
+  });
+}
+```
+
+- 위의 IBasePaginationRepository 의 paginate 는 무조건 id 값을 가진다는 것을 앎
+
+&nbsp;
+
+10. `U extends IBasePaginationRepository<T>` 이렇게 T 넣어줌
+
+```dart
+class PaginationProvider<T extends IModelWithId, U extends IBasePaginationRepository<T>>
+    extends StateNotifier<CursorPaginationBase> {
+  final U repository;
+
+  PaginationProvider({
+    required this.repository,
+  }) : super(CursorPaginationLoading());
+```
