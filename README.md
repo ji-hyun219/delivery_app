@@ -224,3 +224,14 @@ final restaurantRatingRepositoryProvider = Provider.family<RestaurantRatingRepos
 
 family -> 어떤 `rid 값`인지 받아야 하기 때문  
 RestaurantProvider 처럼 `ref` 를 통해 `dio` 가져오고 `baseUrl 지정`해주면 됨
+
+
+
+&nbsp;
+
+### 🧐 1월 4일 학습내용
+
+#### 추상 클래스
+
+https://ts2ree.tistory.com/314
+
