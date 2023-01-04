@@ -225,16 +225,109 @@ final restaurantRatingRepositoryProvider = Provider.family<RestaurantRatingRepos
 family -> 어떤 `rid 값`인지 받아야 하기 때문  
 RestaurantProvider 처럼 `ref` 를 통해 `dio` 가져오고 `baseUrl 지정`해주면 됨
 
-
-
 &nbsp;
 
 ### 🧐 1월 4일 학습내용
 
-#### 추상 클래스
+#### 인터페이스를 알아보기
 
 https://ts2ree.tistory.com/314
 
 - 추상 클래스는 클래스간의 공통점이 있을 때 사용되는 것, 인터페이스는 공통점이 없어도 사용가능
 - 인터페이스는 일반 메서드 또는 멤버 변수를 가질 수 없다 (추상 클래스는 바디가 있는 일반 메서드 또는 멤버 변수를 가질 수 있다)
 - 추상 메서드는 추상 클래스, 인터페이스에 둘다 존재하며 이는 바디가 없고 반드시 오버라이드해서 재정의해야 한다
+
+&nbsp;
+
+#### 페이지네이션 모델 일반화하기
+
+- 문제점: Restaurant Provider 의 paginate 는 Rating Provider 의 긴 함수 paginate 가 똑같이 필요로 한다.(커서페이지네이션 로직 작성한 것..) --> 중복됨
+- 해결책: paginate 를 공용으로 쓰는 방법 알아볼 것
+
+&nbsp;
+
+1. `PaginationProvider` 생성한다 (StateNotifier 여야 함)
+
+- 그 후 paginate 함수 복붙
+
+&nbsp;
+
+2. 그러면 각 모델의 repository 부분이 필요하다는 것을 알 수 있다
+
+```dart
+class PaginationProvider extends StateNotifier<CursorPaginationBase> {
+  final RestaurantRatingRepository repository; // 각 모델의 repository 가 필요하다
+  // 여기서는 예시로 RestaurantRatingRepository
+
+  PaginationProvider() : super(CursorPaginationLoading());
+
+  Future<void> paginate({ // ...
+```
+
+- 문제점: repository 는 각 모델마다 타입이 다르다
+- 해결책: repository 마저 paginate 함수를 일반화해주자
+
+&nbsp;
+
+3. 아래처럼 각 repository 는 타입 빼고 함수가 중복이다
+
+```dart
+ Future<CursorPagination<RatingModel>> paginate({
+    @Queries() PaginationParams? paginationParams = const PaginationParams(),
+  });
+```
+
+&nbsp;
+
+4. 위의 함수를 참고해 아래와 같이 `인터페이스를 생성`해준다  
+   (참고로 다트에서 인터페이스가 따로 있지 않지만 클래스를 사용해서 인터페이스처럼 만들어줄 수 있다)
+
+```dart
+abstract class IBasePaginationRepository<T> {
+  Future<CursorPagination<T>> paginate({
+    PaginationParams? paginationParams = const PaginationParams(),
+  });
+}
+```
+
+&nbsp;
+
+5. RestaurantRepository 를 다음과 같이 `implements` 시킴
+
+```dart
+abstract class RestaurantRepository implements IBasePaginationRepository<RestaurantModel> {
+```
+
+- 인터페이스를 implements 하면 무조건 그 속성이 들어가있다. (여기서 RestaurantRepository 는 paginate 함수가 무조건 포함되어야 한다는 의미)
+
+&nbsp;
+
+6. PaginationProvider 에서 repository 타입을 `IBasePaginationRepository` 로 수정
+
+```dart
+class PaginationProvider extends StateNotifier<CursorPaginationBase> {
+  final IBasePaginationRepository repository;
+
+  PaginationProvider({
+    required this.repository,
+  }) : super(CursorPaginationLoading());
+
+  Future<void> paginate({
+```
+
+&nbsp;
+
+7. IBasePaginationRepository 타입이 너무 일반화되어 있는 것을 수정해보자
+
+```dart
+class PaginationProvider<U extends IBasePaginationRepository> extends StateNotifier<CursorPaginationBase> {
+  final U repository;
+
+  PaginationProvider({
+    required this.repository,
+  }) : super(CursorPaginationLoading());
+
+  Future<void> paginate({
+```
+
+- U 를 extends 하는 이유: dart 에서는 제너릭에서 implements 라는 키워드를 쓸 수 없다
