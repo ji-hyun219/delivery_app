@@ -399,3 +399,35 @@ class PaginationProvider<T extends IModelWithId, U extends IBasePaginationReposi
     required this.repository,
   }) : super(CursorPaginationLoading());
 ```
+
+### 🧐 1월 5일 학습내용
+
+####
+
+- 아까 1번에서 PaginationProvider 를 StateNotifier 를 extends 한 이유가 있다
+- before
+
+```dart
+class RestaurantStateNotifier extends StateNotifier<CursorPaginationBase> {
+  final RestaurantRepository repository;
+
+  RestaurantStateNotifier({
+    required this.repository,
+  }) : super(CursorPaginationLoading()) {
+    paginate();
+  }
+```
+
+- paginate: (생성하자마자 실행하는거)
+
+&nbsp;
+
+- after
+
+```dart
+class RestaurantStateNotifier extends PaginationProvider<RestaurantModel, RestaurantRepository> {
+  RestaurantStateNotifier({required super.repository});
+```
+
+- super.respository 로 수정
+- paginate 함수도 super 클래스로 이동
