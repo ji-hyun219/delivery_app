@@ -4,8 +4,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:skeletons/skeletons.dart';
 
 import '../../common/layout/default_layout.dart';
+import '../../common/model/cursor_pagination_model.dart';
 import '../../product/component/product_card.dart';
 import '../../rating/component/rating_card.dart';
+import '../../rating/model/rating_model.dart';
 import '../../restaurant/component/restaurant_card.dart';
 import '../../restaurant/model/restaurant_detail_model.dart';
 import '../model/restaurant_model.dart';
@@ -29,9 +31,7 @@ class _RestaurantDetailScreenState extends ConsumerState<RestaurantDetailScreen>
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(restaurantDetailProvider(widget.id));
-    final ratingState = ref.watch(restaurantRatingProvider(widget.id));
-
-    print('ratingState : $ratingState');
+    final ratingsState = ref.watch(restaurantRatingProvider(widget.id));
 
     if (state == null) {
       return const DefaultLayout(
@@ -54,6 +54,10 @@ class _RestaurantDetailScreenState extends ConsumerState<RestaurantDetailScreen>
               renderProducts(
                 products: state.products,
               ),
+            if (ratingsState is CursorPagination<RatingModel>)
+              renderRatings(
+                models: ratingsState.data,
+              ),
             const SliverPadding(
               padding: EdgeInsets.symmetric(horizontal: 16.0),
               sliver: SliverToBoxAdapter(
@@ -68,6 +72,25 @@ class _RestaurantDetailScreenState extends ConsumerState<RestaurantDetailScreen>
             ),
           ],
         ));
+  }
+
+  SliverPadding renderRatings({
+    required List<RatingModel> models,
+  }) {
+    return SliverPadding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
+      sliver: SliverList(
+        delegate: SliverChildBuilderDelegate(
+          (_, index) => Padding(
+            padding: const EdgeInsets.only(bottom: 16.0),
+            child: RatingCard.fromModel(
+              model: models[index],
+            ),
+          ),
+          childCount: models.length,
+        ),
+      ),
+    );
   }
 
   SliverPadding renderLoading() {

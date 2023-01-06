@@ -400,9 +400,11 @@ class PaginationProvider<T extends IModelWithId, U extends IBasePaginationReposi
   }) : super(CursorPaginationLoading());
 ```
 
+&nbsp;
+
 ### 🧐 1월 5일 학습내용
 
-####
+#### rating pagination
 
 - 아까 1번에서 PaginationProvider 를 StateNotifier 를 extends 한 이유가 있다
 - before
