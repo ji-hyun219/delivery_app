@@ -433,3 +433,53 @@ class RestaurantStateNotifier extends PaginationProvider<RestaurantModel, Restau
 
 - super.respository 로 수정
 - paginate 함수도 super 클래스로 이동
+
+&nbsp;
+
+### 🧐 1월 6일 학습내용
+
+#### 스크롤할 때 페이지네이션 중복 코드
+
+- 우리 회사 코드도 페이지네이션은 계속 동일한 코드를 여기저기서 쓰는데 이걸 어떻게 하면 utils 로 빼서 공용화할 수 있을지 많은 생각이 들었다 (월요일에 출근하면 해봐야지!! 할 수 있을까)
+
+```dart
+  void scrollListener() {
+    if (controller.offset > controller.position.maxScrollExtent - 300) {
+      ref.read(restaurantProvider.notifier).paginate(
+            fetchMore: true,
+          );
+    }
+```
+
+- 위의 함수가 계속 중복해서 쓰인다면??
+- 안에 paginate 를 공용화해서 쓸 수 있도록 utils 를 만들어보자
+
+&nbsp;
+
+```dart
+class PaginationUtils {
+  static void paginate({
+    required ScrollController controller,
+    required PaginationProvider provider,
+  }) {
+    if (controller.offset > controller.position.maxScrollExtent - 300) {
+      provider.paginate(
+        fetchMore: true,
+      );
+    }
+  }
+}
+```
+
+&nbsp;
+
+```dart
+  void scrollListener() {
+    PaginationUtils.paginate(
+      controller: controller,
+      provider: ref.read(
+        restaurantProvider.notifier,
+      ),
+    );
+  }
+```
