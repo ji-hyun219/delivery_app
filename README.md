@@ -483,3 +483,91 @@ class PaginationUtils {
     );
   }
 ```
+
+&nbsp;
+
+### 🧐 1월 7일 학습내용
+
+#### 페이지네이션이 페이지 UI 마다 중복되는 코드가 많다 --> 일반화해보기
+
+```dart
+  // 이 아래 부분만 다름 (상세 페이지로 가는 부분)
+      return GestureDetector(
+        onTap: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (_) => RestaurantDetailScreen(
+                id: pItem.id,
+              ),
+            ),
+          );
+        },
+        child: RestaurantCard.fromModel(
+          model: pItem,
+        ),
+      );
+```
+
+- 이 부분을 어떻게 일반화해줄 수 있을까?
+- `typedef` 를 만들어서 외부에서 빌드하는 함수를 제공해줄 것이다
+- 외부에서 빌드하는 함수는 `itembuilder`
+- 참고로 typedef : 이런 타입이다 정의
+
+```dart
+typedef PaginationWidgetBuilder<T extends IModelWithId> = Widget Function(
+  BuildContext context,
+  int index,
+  T model,
+);
+```
+
+위를 itemBuilder 라고 하자.
+
+&nbsp;
+
+```dart
+ return widget.itemBuilder(
+              context,
+              index,
+              pItem,
+        );
+```
+
+파라미터를 받아 이렇게 쓰고
+&nbsp;
+
+```dart
+Widget build(BuildContext context) {
+    return PaginationListView(
+      provider: restaurantProvider,
+      itemBuilder: <RestaurantModel>(_, index, model) {
+        return GestureDetector(
+          onTap: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (_) => RestaurantDetailScreen(
+                  id: model.id,
+                ),
+              ),
+            );
+          },
+          child: RestaurantCard.fromModel(model: model),
+        );
+      },
+    );
+  }
+```
+
+파라미터에는 이렇게 정의를 해준다
+
+위의 코드에서 `PaginationListView<T>` 이렇게 써야하는거 아닌가 생각했는데  
+안써줘도 된다 -> 안 써주면 간주될 수도 있다..  
+대신 하위 인자들은 T 타입들이어야 된다는거..
+
+스터디 팀원분이 참고하라고 알려주신 사이트를 참고  
+https://dart.dev/guides/language/language-tour#restricting-the-parameterized-type
+
+아래는 위의 영어를 해석해서 블로그에 적어놓음  
+https://ts2ree.tistory.com/315
+
+그래서 하위에는 RestaurantModel 을 확실히 적어도 문제가 없는거구나..
