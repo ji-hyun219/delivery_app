@@ -571,3 +571,30 @@ https://dart.dev/guides/language/language-tour#restricting-the-parameterized-typ
 https://ts2ree.tistory.com/315
 
 그래서 하위에는 RestaurantModel 을 확실히 적어도 문제가 없는거구나..
+
+&nbsp;
+
+### 🧐 1월 8일 학습내용
+
+#### firstWhereOrNull
+
+- firstWhere 는 일치하는 것이 없으면 에러를 던져버린다
+- firstWhereOrNull 사용
+- collection.dart 에서 import
+
+```dart
+final restaurantDetailProvider = Provider.family<RestaurantModel?, String>((ref, id) {
+  final state = ref.watch(restaurantProvider);
+  // restaurantProvider 가 변하면 빌드 자동 실행됨 !!!
+  // -> 그래서 처음엔 null 이니까 로딩
+  // final resp = await repository.getRestaurantDetail(id: id);
+  // 위엣것 호출 완료되면 일치 데이터 있음 => 반환값이 null 이 아님
+  // 상세페이지 보여줌
+
+  if (state is! CursorPagination) {
+    return null;
+  }
+
+  return state.data.firstWhereOrNull((element) => element.id == id);
+});
+```
