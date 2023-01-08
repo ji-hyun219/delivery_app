@@ -2,6 +2,7 @@ import 'package:delivery_app/common/utils/data_utils.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import '../../common/const/data.dart';
+import '../../common/model/model_with_id.dart';
 import 'restaurant_model.dart';
 
 // RestaurantModel extends 해주고 super 로 전달하면 된다
@@ -50,7 +51,8 @@ class RestaurantDetailModel extends RestaurantModel {
   }
 }
 
-class RestaurantProductModel {
+class RestaurantProductModel implements IModelWithId {
+  @override
   final String id;
   final String name;
   @JsonKey(
