@@ -20,8 +20,8 @@ Map<String, dynamic> _$ProductModelToJson(ProductModel instance) =>
     <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
-      'detail': instance.detail,
       'imgUrl': instance.imgUrl,
+      'detail': instance.detail,
       'price': instance.price,
       'restaurant': instance.restaurant,
     };
