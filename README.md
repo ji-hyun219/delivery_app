@@ -598,3 +598,9 @@ final restaurantDetailProvider = Provider.family<RestaurantModel?, String>((ref,
   return state.data.firstWhereOrNull((element) => element.id == id);
 });
 ```
+
+&nbsp;
+
+### 🧐 1월 18일 학습내용
+
+- Future.value

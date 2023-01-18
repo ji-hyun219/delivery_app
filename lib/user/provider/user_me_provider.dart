@@ -3,13 +3,16 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import '../../common/const/data.dart';
 import '../model/user_model.dart';
+import '../repository/auth_repository.dart';
 import '../repository/user_me_repository.dart';
 
 class UserMeStateNotifier extends StateNotifier<UserModelBase?> {
+  final AuthRepository authRepository;
   final UserMeRepository repository;
   final FlutterSecureStorage storage;
 
   UserMeStateNotifier({
+    required this.authRepository,
     required this.repository,
     required this.storage,
   }) : super(UserModelLoading()) {
@@ -29,5 +32,45 @@ class UserMeStateNotifier extends StateNotifier<UserModelBase?> {
     final resp = await repository.getMe(); // UserModel 반환
 
     state = resp;
+  }
+
+  Future<UserModelBase> login({
+    // 타입이 UserModelBase 인 이유 : 로그인 하다가 에러가 날 수 있으므로.
+    required String username,
+    required String password,
+  }) async {
+    try {
+      state = UserModelLoading(); // 처음엔 로딩으로 하여, CircularIndictor 로 보여주려는 의도
+
+      final resp = await authRepository.login(
+        // base64
+        username: username,
+        password: password,
+      );
+
+      await storage.write(key: REFRESH_TOKEN_KEY, value: resp.refreshToken);
+      await storage.write(key: ACCESS_TOKEN_KEY, value: resp.accessToken);
+
+      final userResp = await repository.getMe();
+
+      state = userResp;
+
+      return userResp;
+    } catch (e) {
+      state = UserModelError(message: '로그인에 실패했습니다.');
+
+      return Future.value(state); // Future.value 처음 봄 -> 공부하기
+    }
+  }
+
+  Future<void> logout() async {
+    state = null;
+
+    await Future.wait(
+      [
+        storage.delete(key: REFRESH_TOKEN_KEY),
+        storage.delete(key: ACCESS_TOKEN_KEY),
+      ],
+    );
   }
 }
