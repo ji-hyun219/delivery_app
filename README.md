@@ -601,6 +601,6 @@ final restaurantDetailProvider = Provider.family<RestaurantModel?, String>((ref,
 
 &nbsp;
 
-### 🧐 1월 18일 학습내용
+### 🧐 1월 19일 학습내용
 
-- Future.value
+- changeNotifer 자세히 따로 정리할 것 !!!!!
