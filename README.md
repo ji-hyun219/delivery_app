@@ -604,3 +604,80 @@ final restaurantDetailProvider = Provider.family<RestaurantModel?, String>((ref,
 ### 🧐 1월 19일 학습내용
 
 - changeNotifer 자세히 따로 정리할 것 !!!!!
+
+&nbsp;
+
+### 🧐 1월 21일 학습내용
+
+```
+# 기존 로직
+401 에러가 나면 액세스 토큰을 새로 발급받는 로직을 짰고
+그 과정에서 리프레시 토큰도 만료라면 에러 나는 로직이었음
+그러면 401 에러가 나고 이때는 handler.reject 하는 로직임
+```
+
+- Todo: 이때 `handler.reject` 하지 말고 `토큰을 다 삭제하고 로그아웃`시키도록 해보자
+
+&nbsp;
+
+```dart
+on DioError catch (e) {
+  ref.read(UserMeProvider.notifier).logout()
+  return handler.reject(e);
+}
+```
+
+위처럼 `userMeProvider logout` 를 불러와서 쓸 수 있지 않을까
+
+-> 하지만 쓰면 안된다
+
+`Unhandled Exception: Instance of 'CircularDependencyError'` 발생
+
+&nbsp;
+
+#### CircularDependencyError
+
+`CircularDependencyError` 는 플러터 에러만이 아닌 다른 어떤 프레임워크에도 존재하는 에러이다
+
+- A -> B -> A -> B -> A -> B ....
+
+```
+UserMeProvider 를 ump 라고 하면
+ump -> dio -> ump -> dio
+UserMeProvider 안에 authRepository, userMeRepository 에서 모두 dio 를 사용하고 있다
+그래서 dio 에서 UserMeProvider 필요하고.. UserMeProvider 에서도 dio 가 필요하고,
+루프가 무한 반복되는 것이다
+```
+
+&nbsp;
+
+#### 이에 대한 해결 방법
+
+- 상위의 하나의 객체를 만들면 된다
+- authProvider 에서 dio 를 받고 있지 않다. 얘를 활용해보자
+
+```dart
+ref.read(authProvider.notifier).logout()
+```
+
+ref.read 하면 함수가 실행되는 순간에만 Provider 를 불러온다
+
+&nbsp;
+
+#### 궁금증이 생겼다.. 똑같은 질문이 게시판에 존재
+
+authProvider의 logout이 userMeProvider를 호출하여 사용하는건데, 왜 직접 inject하는 것과 우회하는 것이 다른 결과를 도출하게 되는지 궁금합니다.
+
+-> watch 와 read 의 가장 큰 차이는 상대 상태의 변화를 '감지'하고 있냐 아니냐의 차이입니다
+표현이 정확한거는 아니지만 read() 를 하더라도 디펜던시가 맞긴 합니다
+watch()를 하지 않으면 변화에 따라 재실행되지 않는다는 표현을 하고 싶었던 겁니다.
+circular dependency의 경우 서로 watch()를 하게될경우 생기는 현상입니다.
+예를들어서 A가 B를 watch()하고 B가 A를 watch() 하면 A가 변경될때 B가 변경되고 B가 변경됐으니 또 A가 변경되고... 이런 무한 루프가 발생하게됩니다.
+
+read()를 실행하는경우 직접 디펜던시를 인젝트 해주고 호출해도 작동상은 크게 다르지 않습니다. 하지만 이렇게 코드를 짜게되면 riverpod을 사용하는 목적을 잃어버리게됩니다.
+
+dio -> authProvider -> userMeProvider -> dio를 통해 이 역시 무한 루프가 발생하지 않을까? 라는 생각에 사로잡혀 위와같이 질문을 남겼는데,(A->B->C->A->...)
+
+authProvider는 dio 를 watch 하지 않고 있으며, userMeProvider 와 dio 가 서로 직접적으로 watch하지 않으므로 circular dependency는 발생하지 않는다. 정도로 이해해도 괜찮을까요?
+
+read는 변화를 따로 감지하는 요소가 아니라 실행되는 순간의 프로바이더를 가져오는거라 예외라고 보시면 됩니다.
