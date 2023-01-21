@@ -1,4 +1,3 @@
-import 'package:delivery_app/restaurant/provider/restaurant_rating_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:skeletons/skeletons.dart';
@@ -13,8 +12,11 @@ import '../../restaurant/component/restaurant_card.dart';
 import '../../restaurant/model/restaurant_detail_model.dart';
 import '../model/restaurant_model.dart';
 import '../provider/restaurant_provider.dart';
+import '../provider/restaurant_rating_provider.dart';
 
 class RestaurantDetailScreen extends ConsumerStatefulWidget {
+  static String get routeName => 'restaurantDetail';
+
   final String id;
   const RestaurantDetailScreen({Key? key, required this.id}) : super(key: key);
 
