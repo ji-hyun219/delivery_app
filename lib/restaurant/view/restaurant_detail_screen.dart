@@ -1,15 +1,19 @@
+import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:skeletons/skeletons.dart';
 
+import '../../common/const/colors.dart';
 import '../../common/layout/default_layout.dart';
 import '../../common/model/cursor_pagination_model.dart';
 import '../../common/utils/pagination_utils.dart';
 import '../../product/component/product_card.dart';
+import '../../product/model/product_model.dart';
 import '../../rating/component/rating_card.dart';
 import '../../rating/model/rating_model.dart';
 import '../../restaurant/component/restaurant_card.dart';
 import '../../restaurant/model/restaurant_detail_model.dart';
+import '../../user/provider/basket_provider.dart';
 import '../model/restaurant_model.dart';
 import '../provider/restaurant_provider.dart';
 import '../provider/restaurant_rating_provider.dart';
@@ -48,6 +52,7 @@ class _RestaurantDetailScreenState extends ConsumerState<RestaurantDetailScreen>
   Widget build(BuildContext context) {
     final state = ref.watch(restaurantDetailProvider(widget.id));
     final ratingsState = ref.watch(restaurantRatingProvider(widget.id));
+    final basket = ref.watch(basketProvider);
 
     if (state == null) {
       return const DefaultLayout(
@@ -59,6 +64,29 @@ class _RestaurantDetailScreenState extends ConsumerState<RestaurantDetailScreen>
 
     return DefaultLayout(
         title: '불타는 떡볶이',
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {},
+          backgroundColor: PRIMARY_COLOR,
+          child: Badge(
+            showBadge: basket.isNotEmpty,
+            badgeContent: Text(
+              basket
+                  .fold<int>(
+                    0,
+                    (previous, next) => previous + next.count,
+                  )
+                  .toString(),
+              style: const TextStyle(
+                color: PRIMARY_COLOR,
+                fontSize: 10.0,
+              ),
+            ),
+            badgeColor: Colors.white,
+            child: const Icon(
+              Icons.shopping_basket_outlined,
+            ),
+          ),
+        ),
         child: CustomScrollView(
           controller: controller,
           slivers: [
@@ -70,6 +98,7 @@ class _RestaurantDetailScreenState extends ConsumerState<RestaurantDetailScreen>
             if (state is RestaurantDetailModel)
               renderProducts(
                 products: state.products,
+                restaurant: state,
               ),
             if (ratingsState is CursorPagination<RatingModel>)
               renderRatings(
@@ -152,6 +181,7 @@ class _RestaurantDetailScreenState extends ConsumerState<RestaurantDetailScreen>
 
   SliverPadding renderProducts({
     required List<RestaurantProductModel> products,
+    required RestaurantModel restaurant,
   }) {
     return SliverPadding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -160,10 +190,25 @@ class _RestaurantDetailScreenState extends ConsumerState<RestaurantDetailScreen>
           (context, index) {
             final model = products[index]; // index
 
-            return Padding(
-              padding: const EdgeInsets.only(top: 16.0),
-              child: ProductCard.fromModel(model: model),
-            );
+            return InkWell(
+                onTap: () {
+                  ref.read(basketProvider.notifier).addToBasket(
+                        product: ProductModel(
+                          id: model.id,
+                          name: model.name,
+                          detail: model.detail,
+                          imgUrl: model.imgUrl,
+                          price: model.price,
+                          restaurant: restaurant,
+                        ),
+                      );
+                },
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 16.0),
+                  child: ProductCard.fromModel(
+                    model: model,
+                  ),
+                ));
           },
           childCount: products.length,
         ),
