@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../common/view/root_tab.dart';
 import '../../common/view/splash_screen.dart';
+import '../../restaurant/view/basket_screen.dart';
 import '../../restaurant/view/restaurant_detail_screen.dart';
 import '../model/user_model.dart';
 import '../view/login_screen.dart';
@@ -40,6 +41,11 @@ class AuthProvider extends ChangeNotifier {
               ),
             ),
           ],
+        ),
+        GoRoute(
+          path: '/basket',
+          name: BasketScreen.routeName,
+          builder: (_, state) => const BasketScreen(),
         ),
         GoRoute(
           path: '/splash',
