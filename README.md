@@ -695,7 +695,7 @@ read는 변화를 따로 감지하는 요소가 아니라 실행되는 순간의
 
 #### fold
 
-FloatingActionButton  
+`FloatingActionButton`  
 basket 안에 있는 각 상품들의 count 를 더해줘야 한다
 
 ```dart
@@ -706,3 +706,12 @@ basket 안에 있는 각 상품들의 count 를 더해줘야 한다
         )
         .toString(),
 ```
+
+&nbsp;
+
+#### Optimistic response
+
+지금까지의 로직은 요청을 보내고 응답이 오면 캐시 업데이트 했다
+근데 응답이 오기까지 시간이 조금 걸려서 장바구니 Count 가 늦게 업데이트 되어서 사용자 입장에서 앱이 많이 느려 보일 수 있다
+
+요청이 성공할거라는 가정 하에 캐시를 먼저 업데이트 해준다
