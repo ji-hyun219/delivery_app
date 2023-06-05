@@ -20,7 +20,15 @@ jobs:
       with:
         flutter-version: '3.7.12'
         channel: 'stable'
-    - run: flutter --version
-
+        
     - name: Get Dependencies
       run: flutter pub get
+      
+    - name: Build Android
+    - uses: actions/setup-java@v2
+      with:
+        distribution: 'zulu'
+        java-version: '11'
+        
+    - run: flutter build apk
+    - run: flutter build appbundle
