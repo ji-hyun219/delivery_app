@@ -1,0 +1,26 @@
+name: Flutter CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+  
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Flutter action
+      uses: subosito/flutter-action@v2.10.0
+      with:
+        flutter-version: '3.7.12'
+        channel: 'stable'
+    - run: flutter --version
+
+    - name: Get Dependencies
+      run: flutter pub get
