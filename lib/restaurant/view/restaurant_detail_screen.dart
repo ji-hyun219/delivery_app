@@ -1,4 +1,4 @@
-import 'package:badges/badges.dart';
+import 'package:badges/badges.dart' as badge;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -71,7 +71,7 @@ class _RestaurantDetailScreenState extends ConsumerState<RestaurantDetailScreen>
             context.pushNamed(BasketScreen.routeName);
           },
           backgroundColor: PRIMARY_COLOR,
-          child: Badge(
+          child: badge.Badge(
             showBadge: basket.isNotEmpty,
             badgeContent: Text(
               basket
