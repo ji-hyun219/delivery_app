@@ -9,7 +9,31 @@ on:
       - main
 
 jobs:
+
+  version:
+    name: Create version number
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install GitVersion
+        uses: gittools/actions/gitversion/setup@v0.9.7
+        with:
+          versionSpec: "5.x"
+      # id 를 사용해서 다음 단계에 참조할 수 있다
+      - name: Use GitVersion
+        id: gitversion
+        uses: gittools/actions/gitversion/execute@v0.9.7
+      - name: Create version.txt with nuGetVersion
+        run: echo ${{ steps.gitversion.outputs.nuGetVersion  }} > version.txt
+      - name: Upload version.txt
+        uses: actions/upload-artifact@v2
+        with:
+          name: gitversion
+          path: version.txt
+          
   build:
+    name: Create Android Build
+    needs: version
     runs-on: ubuntu-latest
   
     steps:
@@ -30,5 +54,4 @@ jobs:
         distribution: 'zulu'
         java-version: '11'
         
-    - run: flutter build apk
-    - run: flutter build appbundle
+    - run: flutter build apk && flutter build appbundle
