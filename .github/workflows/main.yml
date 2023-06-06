@@ -33,12 +33,12 @@ jobs:
         
     - run: flutter build apk && flutter build appbundle
     
-    - name: Create a Release in GitHub
-      uses: ncipollo/release-action@v1
-      with:
-          artifacts: "build/app/outputs/apk/release/*.apk,build/app/outputs/bundle/release/app-release.aab"
-          token: ${{ secrets.GH_TOKEN }}
-          commit: ${{ github.sha }}
+#     - name: Create a Release in GitHub
+#       uses: ncipollo/release-action@v1
+#       with:
+#           artifacts: "build/app/outputs/apk/release/*.apk,build/app/outputs/bundle/release/app-release.aab"
+#           token: ${{ secrets.GH_TOKEN }}
+#           commit: ${{ github.sha }}
           
     - name: Upload app bundle
       uses: actions/upload-artifact@v2
