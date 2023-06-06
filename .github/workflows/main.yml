@@ -30,10 +30,10 @@ jobs:
           # echo > 파일명 : 주어진 파일명으로 파일을 생성하거나 이미 존재하는 파일을 덮어쓰면서 텍스트를 작성합니다 (= redirection)
           # echo >> 파일명 : 주어진 파일명의 파일에 텍스트를 추가합니다. 파일이 존재하지 않으면 새로운 파일을 생성합니다. (= append)
         run: |
-          echo keyPassword=\${{ secrets.KEY_PROPERTY_KEY_PASSWORD }} > ${{env.PROPERTIES_PATH}}
-          echo storePassword=\${{ secrets.KEY_PROPERTY_STORE_PASSWORD }} >> ${{env.PROPERTIES_PATH}}
-          echo keyAlias=\${{ secrets.KEY_PROPERTY_KEY_ALIAS }} >> ${{env.PROPERTIES_PATH}}
-          echo storeFile=\${{ steps.android_keystore.outputs.filePath }} >> ${{env.PROPERTIES_PATH}}
+          echo "keyPassword=${{ secrets.KEY_PROPERTY_KEY_PASSWORD }}" > ${{env.PROPERTIES_PATH}}
+          echo "storePassword=${{ secrets.KEY_PROPERTY_STORE_PASSWORD }}" >> ${{env.PROPERTIES_PATH}}
+          echo "keyAlias=${{ secrets.KEY_PROPERTY_KEY_ALIAS }}" >> ${{env.PROPERTIES_PATH}}
+          echo "storeFile=${{ steps.android_keystore.outputs.filePath }}" >> ${{env.PROPERTIES_PATH}}
 
       - name: Flutter action
         uses: subosito/flutter-action@v2.10.0
